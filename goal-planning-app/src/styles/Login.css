@@ -1,0 +1,28 @@
+#title {
+    font-size: 55px;
+}
+
+#container {
+    display: flex;
+    border: solid;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#content {
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-right: 10px;
+}
+
+input {
+    margin-bottom: 30px;
+}
