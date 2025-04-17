@@ -18,8 +18,10 @@ export default function Login() {
 
                     <input type = "submit" value = "Login" />
                 </form>
-                <Link to = "/register">Create account</Link>
-                <p>Continue as guest</p>
+                <div id = "loginlinks">
+                    <Link to = "/register">Create account</Link>
+                    <Link to = "/home">Continue as guest</Link>
+                </div>
             </div>
         </div>
         

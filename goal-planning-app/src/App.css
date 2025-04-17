@@ -1,6 +1,10 @@
 * {
   background-color: lightsteelblue;
 }
+#loginlinks {
+  display: flex;
+  gap: 30px
+}
 
 .login-reroute {
   display: flex;
