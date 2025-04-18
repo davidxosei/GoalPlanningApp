@@ -10,10 +10,10 @@ export default function Register() {
                 <h1 className = "sign-in-title">Register</h1>
                 <form>
                     <label htmlFor = "username">Username</label>
-                    <input id = "username" type = "text" value = {username} onChange = {(e) => setUsername(e.target.value)}/>
+                    <input id = "username" type = "text" required value = {username} onChange = {(e) => setUsername(e.target.value)}/>
                     
                     <label htmlFor = "password">Password</label>
-                    <input id = "password" type = "password" value = {password} onChange={(e) => setPassword(e.target.value)}/>
+                    <input id = "password" type = "password" required value = {password} onChange={(e) => setPassword(e.target.value)}/>
                     
                     <input type = "submit" value = "Register Account" />
                 </form>

@@ -11,10 +11,10 @@ export default function Login() {
                 <h1 className = "sign-in-title">Log In</h1>
                 <form>
                     <label htmlFor = "username">Username</label>
-                    <input type = "text" id = "username" value = {username} onChange={(e) => setUsername(e.target.value)}/>
+                    <input type = "text" id = "username" required value = {username} onChange={(e) => setUsername(e.target.value)}/>
 
                     <label htmlFor = "password">Password</label>
-                    <input type = "password" id = "password" value = {password} onChange={(e) => setPassword(e.target.value)}/>
+                    <input type = "password" id = "password" required value = {password} onChange={(e) => setPassword(e.target.value)}/>
 
                     <input type = "submit" value = "Login" />
                 </form>
