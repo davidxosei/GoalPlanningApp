@@ -6,10 +6,54 @@
   gap: 30px
 }
 
+.addStepButton {
+  position: fixed;
+  right: 0px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: white;
+  margin-right: 50px;
+  margin-top: 40px;
+}
+
+.addStepTop {
+  display: flex;
+  gap: 80px;
+  align-items: center;
+}
+
+.body {
+  margin-top: 70px;
+}
+
+.createTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-reroute {
   display: flex;
   align-items: center;
   gap: 10px
+}
+
+.modal {
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  z-index: 1000;
+  position: fixed;
+  border: solid;
+  border-color: black;
+}
+
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .roadmapContainer {
@@ -28,6 +72,25 @@
   align-items: center;
 }
 
+.roadmapSubmit {
+  position: fixed;
+  display: block;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: 0;
+  width: 10%;
+  font-size: 20px;
+  background-color: white;
+  font-weight: bold;
+  margin: 40px auto 0;
+}
+
+.roadmapTitle {
+  width: 700px;
+  margin: 30px auto 0;
+  font-size: 40px;
+}
+
 .sign-in-title {
   font-size: 55px;
 }
@@ -39,7 +102,31 @@
   align-items: center;
   height: 100vh;
 }
+
+.stepIcon {
+  padding: 20px;
+  border-radius: 50%;
+  max-height: 150px;
+  max-width: 150px;
+  border: solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+}
+
+.stepTitle {
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
 #nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
