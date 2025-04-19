@@ -17,11 +17,16 @@ export default function Roadmap({steps}) {
                 setModalVisible = {setModalVisible}
                 />
             })}
-        {modalVisible && (<div className="modal">
-            <h2>{modalTitle}</h2>
-            <button onClick={() => setModalVisible(false)}>X</button>
-            <p>{modalDescription}</p>
-        </div>)}
+        {modalVisible && (
+            <div className="modal">
+                <div className="modalTop">
+                    <h2>{modalTitle}</h2>
+                    <button onClick={() => setModalVisible(false)}>X</button>
+                </div>
+                <p>{modalDescription}</p>
+                
+            </div>
+        )}
         </div>
     );
 }

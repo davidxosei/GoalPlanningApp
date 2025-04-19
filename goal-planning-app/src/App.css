@@ -50,6 +50,12 @@
   border-color: black;
 }
 
+.modalTop {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
 .roadmap {
   display: flex;
   flex-direction: column;
@@ -113,6 +119,7 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
+  cursor: pointer;
 }
 
 .stepTitle {
@@ -158,10 +165,12 @@ button {
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  color: black;
+  border: solid;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: lightblue;
 }
 
 form {

@@ -25,7 +25,7 @@ function Modal({onClose, setSteps}) {
             <form onSubmit={handleStepSubmit}>
                 <input style = {{marginBottom: "0px"}} placeholder="Enter step title" required maxLength={45} value = {stepTitle} onChange={(e) => setStepTitle(e.target.value)}/>
                 <p>{stepTitle.length}/45 chars</p>
-                <textarea placeholder="Enter description" required value = {stepDescription} onChange={(e) => setStepDescription(e.target.value)}/>
+                <textarea placeholder="Enter description" required value = {stepDescription} maxLength = {2000} onChange={(e) => setStepDescription(e.target.value)}/>
                 <input style = {{marginTop: "40px"}} type = "submit" value = "Add new step" />
             </form>
         </div>
@@ -47,7 +47,7 @@ export default function Create() {
             <Nav />
             <div className="createTop">
                 <input className = "roadmapTitle" placeholder="Enter roadmap title..." required value = {roadmapTitle} onChange={(e) => setRoadmapTitle(e.target.value)} />
-                <input className="addStepButton" type = "button" value = "Add Step" onClick = {openModal} />
+                <button className="addStepButton" onClick = {openModal}>Add Step</button>
             </div>
 
             <Roadmap steps = {steps} />
