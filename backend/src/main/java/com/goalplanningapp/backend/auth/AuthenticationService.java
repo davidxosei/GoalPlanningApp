@@ -22,6 +22,11 @@ public class AuthenticationService {
         if(userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("Username already taken.");
         }
+
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+
         User user = User.builder()
             .username(request.getUsername())
             .password(passwordEncoder.encode(request.getPassword())).build();

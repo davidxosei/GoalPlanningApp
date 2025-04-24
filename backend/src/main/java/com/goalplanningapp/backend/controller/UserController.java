@@ -22,27 +22,23 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
         try {
             authenticationService.authenticate(request);
-        } catch (Exception e) {
-            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-
-        return ResponseEntity.status(HttpStatus.OK).build();
-        
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
             authenticationService.register(request);
-        } catch (Exception e) {
-            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-        
     }
 
 }
