@@ -12,10 +12,15 @@ export default function Register() {
         e.preventDefault();
         setLoading(true);
 
+        if (password !== confirmPassword) {
+            console.error("Passwords do not match.");
+            setLoading(false);
+            return;
+        }
+
         const requestBody = {
             username: username,
             password: password,
-            confirmPassword: confirmPassword
         }
 
         const apiUrl = "http://localhost:8080/api/users/register"

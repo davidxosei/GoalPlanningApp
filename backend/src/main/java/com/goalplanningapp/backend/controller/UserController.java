@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goalplanningapp.backend.auth.AuthenticationService;
+import com.goalplanningapp.backend.auth.JwtAuthenticationResponse;
 import com.goalplanningapp.backend.dto.AuthenticationRequest;
 import com.goalplanningapp.backend.dto.RegisterRequest;
 
@@ -24,8 +25,8 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
         try {
-            authenticationService.authenticate(request);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            JwtAuthenticationResponse tokens = authenticationService.authenticate(request);
+            return ResponseEntity.ok(tokens);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
@@ -34,8 +35,8 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            authenticationService.register(request);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            JwtAuthenticationResponse tokens = authenticationService.register(request);
+            return ResponseEntity.ok(tokens);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

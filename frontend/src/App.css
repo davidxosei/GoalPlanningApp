@@ -33,6 +33,11 @@
   justify-content: center;
 }
 
+.errorMessage {
+  color: white;
+  background-color: red; 
+}
+
 .login-reroute {
   display: flex;
   align-items: center;
