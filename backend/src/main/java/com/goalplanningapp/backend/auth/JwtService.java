@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.goalplanningapp.backend.model.User;
@@ -16,7 +17,9 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
     
-    private String SECRET_KEY = "Planning to use env var here 256 b";
+    @Value("${JWT_SECRET_KEY}")
+    private String SECRET_KEY;
+
     private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 15;
     private static final long REFRESH_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
 
