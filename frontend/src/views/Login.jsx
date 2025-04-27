@@ -29,9 +29,9 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 
-                localStorage.setItem("token", data.accessToken);
+                localStorage.setItem("accessToken", data.accessToken);
                 localStorage.setItem("refreshToken", data.refreshToken);
-                console.log("Received access token", localStorage.getItem("token"));
+                console.log("Received access token", localStorage.getItem("accessToken"));
                 console.log("Received refresh token", localStorage.getItem("refreshToken"));
                 navigate("/");
             }

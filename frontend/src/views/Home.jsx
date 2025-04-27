@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
 import {useState} from 'react';
+import { useEffect } from 'react';
 
 export default function Home() {
-    const username = "David";
+    const [username, setUsername] = useState(localStorage.getItem("username") || "");
+
     const [roadmaps, setRoadmaps] = useState([
         {
             key: 1,
@@ -21,6 +23,31 @@ export default function Home() {
         }
       ]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            if (!username) {
+                const apiUrl = "http://localhost:8080/api/users/username";
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: "GET",
+                        headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`},
+                    });
+    
+                    if (response.ok) {
+                        const data = await response.json();
+                        localStorage.setItem("username", data.username);
+                        setUsername(data.username);
+                    }
+                } catch (exception) {
+                    console.error(exception);
+                }
+            }
+        };
+    
+        fetchUsername();
+    }, [username]);
+    
 
     const previewClicked = (roadmap) => {
         console.log("clicked", roadmap);

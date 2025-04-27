@@ -35,7 +35,12 @@ export default function Register() {
             });
 
             if(response.ok) {
-                navigate("/home");
+                const data = await response.json();
+                localStorage.setItem("accessToken", data.accessToken);
+                localStorage.setItem("refreshToken", data.refreshToken);
+                console.log("Received access token", localStorage.getItem("accessTken"));
+                console.log("Received refresh token", localStorage.getItem("refreshToken"));
+                navigate("/");
             }
             else {
                 const errorMessage = await response.text();
@@ -70,7 +75,7 @@ export default function Register() {
                 </form>
                 <div className = "login-reroute">
                     <p>Already have an account?</p>
-                    <Link to = "/">Log In</Link>
+                    <Link to = "/login">Log In</Link>
                 </div>
             </div>
         </div>

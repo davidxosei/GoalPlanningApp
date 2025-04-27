@@ -5,7 +5,7 @@ export default function Nav() {
     const navigate = useNavigate();
     const handleLogOut = () => {
         navigate("/");
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken")
     }
     return (
