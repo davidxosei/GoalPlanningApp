@@ -21,17 +21,41 @@ public class RoadmapService {
     }
 
     public void createRoadmap(RoadmapRequest request, User user) {
-        Roadmap roadmap = new Roadmap();
-        roadmap.setTitle(request.getTitle());
-        roadmap.setUser(user);
-        List<Step> steps = new ArrayList<>();
-
-        for (StepRequest stepRequest : request.getSteps()) {
-            Step step = new Step();
-            step.setTitle(stepRequest.getTitle());
-            step.setDescription(stepRequest.getDescription());
-            step.setRoadmap(roadmap);
-            steps.add(step);
+        try {
+            Roadmap roadmap = new Roadmap();
+            List<Step> steps = new ArrayList<>();
+            try {
+                
+                roadmap.setTitle(request.getTitle());
+                roadmap.setUser(user);
+                
+            }
+            catch(RuntimeException e) {
+                throw new RuntimeException("Error occurs during roadmap creation");
+            }
+            
+            try {
+                for (StepRequest stepRequest : request.getSteps()) {
+                    Step step = new Step();
+                    step.setTitle(stepRequest.getTitle());
+                    step.setDescription(stepRequest.getDescription());
+                    step.setRoadmap(roadmap);
+                    steps.add(step);
+                    roadmap.setSteps(steps);
+                }
+            }
+            catch(RuntimeException e) {
+                throw new RuntimeException("Error occurs during step creation");
+            }
+            
+            try {
+                roadmapRepository.save(roadmap);
+            } catch (Exception e) {
+                throw new RuntimeException("Error occurs when trying to save roadmap");
+            }
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving roadmap.");
         }
         
 
