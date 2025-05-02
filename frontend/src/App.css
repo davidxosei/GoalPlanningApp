@@ -36,6 +36,7 @@
 .errorMessage {
   color: white;
   background-color: red; 
+  max-width: 150px;
 }
 
 .login-reroute {
@@ -112,6 +113,13 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.stepIconWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  cursor: none;
 }
 
 .stepIcon {

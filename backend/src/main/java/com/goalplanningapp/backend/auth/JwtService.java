@@ -20,7 +20,7 @@ public class JwtService {
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
 
-    private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 15;
+    private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 15 * 4;
     private static final long REFRESH_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
 
     public Key getSigningKey() {

@@ -33,8 +33,12 @@ public class RoadmapService {
             step.setRoadmap(roadmap);
             steps.add(step);
         }
-        roadmap.setSteps(steps);
-        roadmapRepository.save(roadmap);
+        
 
+    }
+
+    public List<Roadmap> loadRoadmaps(User user) {
+        List<Roadmap> roadmaps = roadmapRepository.findByUser(user).orElseThrow(() -> new RuntimeException("User is not associated with any roadmap."));
+        return roadmaps;
     }
 }

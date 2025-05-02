@@ -6,7 +6,8 @@ export default function Nav() {
     const handleLogOut = () => {
         navigate("/");
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken")
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("username");
     }
     return (
         <div id = "nav">

@@ -1,5 +1,7 @@
 package com.goalplanningapp.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class Step {
     @Column(nullable = false)
     private String description;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "roadmap_id")
     private Roadmap roadmap;

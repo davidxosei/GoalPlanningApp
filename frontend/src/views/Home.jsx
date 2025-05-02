@@ -6,22 +6,7 @@ import { useEffect } from 'react';
 export default function Home() {
     const [username, setUsername] = useState(localStorage.getItem("username") || "");
 
-    const [roadmaps, setRoadmaps] = useState([
-        {
-            key: 1,
-          title: "This is a test 1", 
-          steps: [
-            {title: "Test 1 Step 1", description: "Test1 description for Step 1"}
-          ]
-        },
-        {
-            key: 2,
-          title: "This is a test 2", 
-          steps: [
-            {title: "Test 2 Step 2", description: "Test2 description for Step 2"}
-          ]
-        }
-      ]);
+    const [roadmaps, setRoadmaps] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,7 +16,9 @@ export default function Home() {
                 try {
                     const response = await fetch(apiUrl, {
                         method: "GET",
-                        headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`},
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                        },
                     });
     
                     if (response.ok) {
@@ -48,6 +35,27 @@ export default function Home() {
         fetchUsername();
     }, [username]);
     
+    useEffect(() => {
+        const fetchRoadmaps = async () => {
+            const apiUrl = "http://localhost:8080/api/roadmaps/load";
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {"Authorization": `Bearer ${localStorage.getItem("accessToken")}`}
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setRoadmaps(data);
+                }
+            } 
+            catch (error) {
+                console.error(error);
+            }
+
+        }
+        fetchRoadmaps();
+    }, []);
 
     const previewClicked = (roadmap) => {
         console.log("clicked", roadmap);

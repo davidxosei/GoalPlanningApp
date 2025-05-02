@@ -7,6 +7,7 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,6 +15,7 @@ export default function Register() {
 
         if (password !== confirmPassword) {
             console.error("Passwords do not match.");
+            setErrorMessage("Passwords do not match.");
             setLoading(false);
             return;
         }
@@ -38,17 +40,17 @@ export default function Register() {
                 const data = await response.json();
                 localStorage.setItem("accessToken", data.accessToken);
                 localStorage.setItem("refreshToken", data.refreshToken);
-                console.log("Received access token", localStorage.getItem("accessTken"));
-                console.log("Received refresh token", localStorage.getItem("refreshToken"));
                 navigate("/");
             }
             else {
                 const errorMessage = await response.text();
                 console.error("Backend error: ",errorMessage);
+                setErrorMessage(errorMessage);
             }
             
         } catch (error) {
             console.error("Error during fetch", error);
+            setErrorMessage("Error communicating with server, please try again later.");
             
         }
         finally {
@@ -61,6 +63,7 @@ export default function Register() {
         <div className='sign-in-container'>
             <div id = "content">
                 <h1 className = "sign-in-title">Register</h1>
+                {errorMessage && <div className='errorMessage'>{errorMessage}</div>}
                 <form onSubmit={handleSubmit}>
                     <label htmlFor = "username">Username</label>
                     <input id = "username" type = "text" required value = {username} onChange = {(e) => setUsername(e.target.value)}/>

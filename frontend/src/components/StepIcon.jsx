@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function StepIcon({step, index, setModalDescription, setModalTitle, setModalVisible}) {
+export default function StepIcon({step, steps, setSteps, index, isCreate, setModalDescription, setModalTitle, setModalVisible}) {
     const waveLength = 6;
     const horizontalAmplitude = 100;
     const verticalAmplitude = 20;
@@ -13,10 +13,38 @@ export default function StepIcon({step, index, setModalDescription, setModalTitl
         setModalTitle(step.title);
         setModalVisible(true);
     };
+    const deleteStep = () => {
+            console.log("Delete clicked");
+            setSteps(steps.filter((s, i) => i !== index));
+
+    };
     
     return (
-        <div className = "stepTitle" onClick = {showStep}>
-            <h2 style = {{transform: `translateX(${horizontalOffset}px) translateY(${verticalOffset}px)`}}className="stepIcon">{step.title}</h2>
-        </div>
+      <div
+      className="stepIconWrapper"
+      
+      style={{
+        position: 'relative',
+        cursor: 'pointer',
+        transform: `translate(${horizontalOffset}px, ${verticalOffset}px)`
+      }}
+    >
+      <div className="stepIcon" onClick={showStep}>
+        <h2 className="stepTitle">{step.title}</h2>
+      </div>
+      {isCreate && (
+        <p
+          style={{ color: 'red', border:'solid'}}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteStep();
+          }}
+        >
+          Remove
+        </p>
+      )}
+    </div>
+    
+        
     );
 }

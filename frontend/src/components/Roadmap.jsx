@@ -1,17 +1,20 @@
 import StepIcon from "./StepIcon";
 import { useState } from "react";
 
-export default function Roadmap({steps}) {
+export default function Roadmap({steps, setSteps, isCreate}) {
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
     
     return (
-        <div className="roadmap">
+        <div className="roadmap" >
             {steps.map((step, index) => {
                 return <StepIcon 
-                step = {step} 
+                step = {step}
+                steps = {steps}
+                setSteps = {setSteps} 
                 index = {index} 
+                isCreate = {isCreate}
                 setModalDescription = {setModalDescription} 
                 setModalTitle = {setModalTitle}
                 setModalVisible = {setModalVisible}

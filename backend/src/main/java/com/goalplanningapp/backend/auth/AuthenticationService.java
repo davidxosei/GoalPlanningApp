@@ -49,7 +49,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid Credentials");
+            throw new RuntimeException("Invalid credentials");
         }
 
         String accessToken = jwtService.generateAccessToken(user);
