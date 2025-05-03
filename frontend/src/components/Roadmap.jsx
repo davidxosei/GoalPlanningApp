@@ -1,7 +1,7 @@
 import StepIcon from "./StepIcon";
 import { useState } from "react";
 
-export default function Roadmap({steps, setSteps, isCreate}) {
+export default function Roadmap({steps, setSteps, isCreate, showStepDelete}) {
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
@@ -18,6 +18,7 @@ export default function Roadmap({steps, setSteps, isCreate}) {
                 setModalDescription = {setModalDescription} 
                 setModalTitle = {setModalTitle}
                 setModalVisible = {setModalVisible}
+                showStepDelete = {showStepDelete}
                 />
             })}
         {modalVisible && (

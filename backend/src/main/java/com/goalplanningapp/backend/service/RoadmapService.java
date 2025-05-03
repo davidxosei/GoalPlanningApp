@@ -11,13 +11,16 @@ import com.goalplanningapp.backend.model.Roadmap;
 import com.goalplanningapp.backend.model.Step;
 import com.goalplanningapp.backend.model.User;
 import com.goalplanningapp.backend.repository.RoadmapRepository;
+import com.goalplanningapp.backend.repository.StepRepository;
 
 @Service
 public class RoadmapService {
     RoadmapRepository roadmapRepository;
+    StepRepository stepRepository;
 
-    public RoadmapService(RoadmapRepository roadmapRepository) {
+    public RoadmapService(RoadmapRepository roadmapRepository, StepRepository stepRepository) {
         this.roadmapRepository = roadmapRepository;
+        this.stepRepository = stepRepository;
     }
 
     public void createRoadmap(RoadmapRequest request, User user) {
@@ -65,4 +68,24 @@ public class RoadmapService {
         List<Roadmap> roadmaps = roadmapRepository.findByUser(user).orElseThrow(() -> new RuntimeException("User is not associated with any roadmap."));
         return roadmaps;
     }
+
+    public void deleteRoadmap(Long id, User user) {
+        Roadmap roadmap = roadmapRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Roadmap not found"));
+    
+        if (!roadmap.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not authorized to delete this roadmap.");
+        }
+    
+        roadmapRepository.delete(roadmap);
+    }
+
+    public void deleteStep(Long id, User user) {
+        Step step = stepRepository.findById(id).orElseThrow(() -> new RuntimeException("Step with id"+ id+ "not found"));
+        if(!step.getRoadmap().getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not authorized to delete this step.");
+        }
+        stepRepository.delete(step);
+    }
+    
 }

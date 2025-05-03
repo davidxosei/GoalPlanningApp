@@ -1,130 +1,140 @@
-import { useNavigate } from 'react-router-dom';
-import Nav from '../components/Nav';
-import {useState} from 'react';
-import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Nav from "../components/Nav";
 
 export default function Home() {
-    const [username, setUsername] = useState(localStorage.getItem("username") || "");
+  const [username, setUsername] = useState(localStorage.getItem("username") || "");
+  const [roadmaps, setRoadmaps] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showRoadmapDelete, setShowRoadmapDelete] = useState(false);
 
-    const [roadmaps, setRoadmaps] = useState([]);
-    const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-    
-    const refreshTokenUrl = "http://localhost:8080/api/users/refresh";
-    const refreshOptions = {
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  const refreshAccessToken = async () => {
+    const res = await fetch("http://localhost:8080/api/users/refresh", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${refreshToken}` },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem("accessToken", data.newAccessToken);
+      return data.newAccessToken;
+    }
+    return null;
+  };
+
+  const fetchWithRetry = async (url, options, retryFunc) => {
+    const res = await fetch(url, options);
+    if (res.status === 403) {
+      const newToken = await refreshAccessToken();
+      if (!newToken) {
+        localStorage.clear();
+        navigate("/login");
+        return null;
+      }
+      options.headers.Authorization = `Bearer ${newToken}`;
+      return retryFunc();
+    }
+    return res;
+  };
+
+  useEffect(() => {
+    if (!username) {
+      fetch("http://localhost:8080/api/users/username", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+        .then((res) => res.ok && res.json())
+        .then((data) => {
+          if (data?.username) {
+            localStorage.setItem("username", data.username);
+            setUsername(data.username);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    const loadRoadmaps = async () => {
+      setLoading(true);
+      const options = {
         method: "GET",
-        headers: {"Authorization" : `Bearer ${localStorage.getItem("refreshToken")}`}
+        headers: { Authorization: `Bearer ${accessToken}` },
+      };
+
+      const fetchRoadmaps = () => fetch("http://localhost:8080/api/roadmaps/load", options);
+      const res = await fetchWithRetry("http://localhost:8080/api/roadmaps/load", options, fetchRoadmaps);
+
+      if (res && res.ok) {
+        const data = await res.json();
+        setRoadmaps(data);
+      }
+      setLoading(false);
     };
-    useEffect(() => {
-        const fetchUsername = async () => {
-            if (!username) {
-                const apiUrl = "http://localhost:8080/api/users/username";
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-                        },
-                    });
-    
-                    if (response.ok) {
-                        const data = await response.json();
-                        localStorage.setItem("username", data.username);
-                        setUsername(data.username);
-                    }
-                } catch (exception) {
-                    console.error(exception);
-                }
-            }
-        };
-    
-        fetchUsername();
-    }, [username]);
-    
-    useEffect(() => {
-        const fetchRoadmaps = async (retry) => {
-            const apiUrl = "http://localhost:8080/api/roadmaps/load";
-            const standardOptions = {
-                method: "GET",
-                headers: {"Authorization" : `Bearer ${localStorage.getItem("accessToken")}`}
-            };
-            try {
-                setLoading(true);
-                const response = await fetch(apiUrl, standardOptions);
 
-                if (response.ok) {
-                    if(retry) {
-                        console.log("retry was successful and were now using the new one")
-                    }
-                    const data = await response.json();
-                    setRoadmaps(data);
-                    
-                }
-                else if (response.status === 403 && !retry) {
-                    console.log("access Token expired trying to get a new one with the refresh token");
-                    const response = await fetch(refreshTokenUrl, refreshOptions);
-                    
-                    if(response.ok) {
-                        console.log("We safely got a new acess Token");
-                        const data = await response.json();
-                        localStorage.setItem("accessToken", data.newAccessToken);
-                        console.log(localStorage.getItem("accessToken"));
-                        fetchRoadmaps(true);
-                    } 
-                    else {
-                        console.log("Retrying was not okay")
-                    }
+    loadRoadmaps();
+  }, []);
 
-                }
-                else {
-                    console.log("We reached this bc the response status was: ", response.status, " and it is ", retry, " that we already retried.");
-                    console.log("Both access and refresh tokens are no longer valid, redirecting to login.");
-                    localStorage.removeItem("accessToken");
-                    localStorage.removeItem("refreshToken");
-                    localStorage.removeItem("username");
-                    navigate("/login");
-                }
-            } 
-            catch (error) {
-                console.error(error);
-                
-            }
-            finally {
-                setLoading(false);
-            }
-
-        }
-        fetchRoadmaps(false);
-    }, []);
-
-    const previewClicked = (roadmap) => {
-        console.log("clicked", roadmap);
-        navigate("/display-roadmap", {state: roadmap})
+  const handleRoadmapDelete = async (roadmapId) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: roadmapId }),
     };
-    
-    return (
-        <>
-            <Nav />
-            <div className= "body">
-                <h1>
-                    Hello, {username}!
-                </h1>
-                <h2>Your Roadmaps</h2>
-                <div className = "roadmapContainer">
-                    {loading && <h3>Roadmaps loading...</h3>}
-                    {roadmaps.map(
-                        (roadmap) => {
-                            return(
-                                <div className = "roadmapPreview" onClick={() => previewClicked(roadmap)}>
-                                    <h2 style = {{backgroundColor: "white"}}>{roadmap.title}</h2>
-                                </div>
-                            );
-                            
-                        }
-                    )}
-                </div>
+
+    const deleteRequest = () =>
+      fetch("http://localhost:8080/api/roadmaps/delete/roadmap", options);
+
+    const res = await fetchWithRetry("http://localhost:8080/api/roadmaps/delete/roadmap", options, deleteRequest);
+
+    if (res && res.ok) {
+      setRoadmaps((prev) => prev.filter((rm) => rm.id !== roadmapId));
+    }
+  };
+
+  const previewClicked = (roadmap) => {
+    navigate("/display-roadmap", { state: roadmap });
+  };
+
+  return (
+    <>
+      <Nav />
+      <div className="body">
+        <div className="bodyHeader">
+          <h1>Hello, {username}!</h1>
+          <input
+            className="manageRoadmaps"
+            type="button"
+            onClick={() => setShowRoadmapDelete((prev) => !prev)}
+            value={showRoadmapDelete ? "Cancel" : "Manage Roadmaps"}
+          />
+        </div>
+
+        <h2>Your Roadmaps</h2>
+        <div className="roadmapContainer">
+          {loading && <h3>Roadmaps loading...</h3>}
+          {roadmaps.map((roadmap) => (
+            <div key={roadmap.id} style={{ display: "flex", alignItems: "center" }}>
+              <div className="roadmapPreview" onClick={() => previewClicked(roadmap)}>
+                <h2 style={{ backgroundColor: "white" }}>{roadmap.title}</h2>
+              </div>
+              {showRoadmapDelete && (
+                <input
+                  type="button"
+                  value="DELETE"
+                  onClick={() => handleRoadmapDelete(roadmap.id)}
+                />
+              )}
             </div>
-        </>
-    );
+          ))}
+        </div>
+      </div>
+    </>
+  );
 }
