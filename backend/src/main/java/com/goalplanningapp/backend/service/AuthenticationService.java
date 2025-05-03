@@ -25,12 +25,13 @@ public class AuthenticationService {
     }
 
     public JwtAuthenticationResponse register(RegisterRequest request) {
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+        if (userRepository.findByLowerUsername(request.getUsername().toLowerCase()).isPresent()) {
             throw new RuntimeException("Username already taken.");
         }
 
         User user = User.builder()
                 .username(request.getUsername())
+                .lowerUsername(request.getUsername().toLowerCase())
                 .password(passwordEncoder.encode(request.getPassword())).build();
 
         userRepository.save(user);

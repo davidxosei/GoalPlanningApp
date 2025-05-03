@@ -38,6 +38,9 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String lowerUsername;
+
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
