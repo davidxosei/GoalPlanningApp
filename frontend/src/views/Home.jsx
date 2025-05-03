@@ -7,6 +7,7 @@ export default function Home() {
     const [username, setUsername] = useState(localStorage.getItem("username") || "");
 
     const [roadmaps, setRoadmaps] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     
@@ -49,6 +50,7 @@ export default function Home() {
                 headers: {"Authorization" : `Bearer ${localStorage.getItem("accessToken")}`}
             };
             try {
+                setLoading(true);
                 const response = await fetch(apiUrl, standardOptions);
 
                 if (response.ok) {
@@ -88,6 +90,9 @@ export default function Home() {
                 console.error(error);
                 
             }
+            finally {
+                setLoading(false);
+            }
 
         }
         fetchRoadmaps(false);
@@ -107,6 +112,7 @@ export default function Home() {
                 </h1>
                 <h2>Your Roadmaps</h2>
                 <div className = "roadmapContainer">
+                    {loading && <h3>Roadmaps loading...</h3>}
                     {roadmaps.map(
                         (roadmap) => {
                             return(

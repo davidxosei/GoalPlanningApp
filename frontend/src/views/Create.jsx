@@ -44,7 +44,7 @@ export default function Create() {
     const [errorMessage, setErrorMessage] = useState("");
     const [steps, setSteps] = useState([]);
     const navigate = useNavigate();
-    const handleRoadmapSubmit = async () => {
+    const handleRoadmapSubmit = async (retry) => {
         if(roadmapTitle.length < 1) {
             setErrorMessage("Roadmap title required");
             return;
@@ -65,12 +65,34 @@ export default function Create() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
+                if(retry) {
+                    console.log("This was a retry and it worked.");
+                }
                 console.log("Roadmap submitted successfully");
                 navigate("/");
             }
 
-            if (response.status === 403) {
-                console.log("We reached the 403 condition")
+            else if (response.status === 403 && !retry) {
+                console.log("Access token expired trying to get a new one...");
+                const refreshUrl = "http://localhost:8080/api/users/refresh";
+                const response = await fetch(refreshUrl, {
+                    method: "GET",
+                    headers: {"Authorization" : `Bearer ${localStorage.getItem("refreshToken")}`}
+
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem("accessToken", data.newAccessToken);
+                    handleRoadmapSubmit(true);
+                }
+            }
+            else {
+                console.log("Access and refresh token expired. Redirecting to login.");
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("username");
+                navigate("/login");
             }
         } catch (error) {
             console.log(error);
@@ -89,7 +111,7 @@ export default function Create() {
             
             {modalVisible && <Modal onClose = {closeModal} setSteps = {setSteps} />}
             
-            {steps.length > 0 && <input className = "roadmapSubmit" type = "button" value = "Publish Roadmap" onClick={handleRoadmapSubmit}/>}
+            {steps.length > 0 && <input className = "roadmapSubmit" type = "button" value = "Publish Roadmap" onClick={() => handleRoadmapSubmit(false)}/>}
         </div>
     );
 }
