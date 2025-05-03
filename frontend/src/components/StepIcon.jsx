@@ -22,7 +22,7 @@ export default function StepIcon({step, steps, setSteps, index, isCreate, setMod
     };
 
     const handleStepDelete = async (stepId, retry) => {
-      const apiUrl = "http://localhost:8080/api/roadmaps/delete/step";
+      const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/roadmaps/delete/step`;
       const data = {id: stepId};
       const response = await fetch(apiUrl, {
         method: "DELETE",
@@ -39,7 +39,7 @@ export default function StepIcon({step, steps, setSteps, index, isCreate, setMod
         console.log(message);
       }
       else if (response.status === 403 && !retry) {
-        const apiUrl = "http://localhost:8080/api/users/refresh";
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/users/refresh`;
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {

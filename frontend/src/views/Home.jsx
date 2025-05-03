@@ -14,7 +14,7 @@ export default function Home() {
   const refreshToken = localStorage.getItem("refreshToken");
 
   const refreshAccessToken = async () => {
-    const res = await fetch("http://localhost:8080/api/users/refresh", {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/refresh`, {
       method: "GET",
       headers: { Authorization: `Bearer ${refreshToken}` },
     });
@@ -43,7 +43,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!username) {
-      fetch("http://localhost:8080/api/users/username", {
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/username`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((res) => res.ok && res.json())
@@ -65,8 +65,8 @@ export default function Home() {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
 
-      const fetchRoadmaps = () => fetch("http://localhost:8080/api/roadmaps/load", options);
-      const res = await fetchWithRetry("http://localhost:8080/api/roadmaps/load", options, fetchRoadmaps);
+      const fetchRoadmaps = () => fetch(`${import.meta.env.VITE_API_BASE_URL}/api/roadmaps/load`, options);
+      const res = await fetchWithRetry(`${import.meta.env.VITE_API_BASE_URL}/api/roadmaps/load`, options, fetchRoadmaps);
 
       if (res && res.ok) {
         const data = await res.json();
@@ -89,9 +89,9 @@ export default function Home() {
     };
 
     const deleteRequest = () =>
-      fetch("http://localhost:8080/api/roadmaps/delete/roadmap", options);
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/api/roadmaps/delete/roadmap`, options);
 
-    const res = await fetchWithRetry("http://localhost:8080/api/roadmaps/delete/roadmap", options, deleteRequest);
+    const res = await fetchWithRetry(`${import.meta.env.VITE_API_BASE_URL}/api/roadmaps/delete/roadmap`, options, deleteRequest);
 
     if (res && res.ok) {
       setRoadmaps((prev) => prev.filter((rm) => rm.id !== roadmapId));

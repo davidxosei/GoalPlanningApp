@@ -51,7 +51,7 @@ export default function Create() {
         }
 
         try {
-            const apiUrl = "http://localhost:8080/api/roadmaps/create";
+            const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/roadmaps/create`;
             const data = {
                 title: roadmapTitle,
                 steps: steps
@@ -74,7 +74,7 @@ export default function Create() {
 
             else if (response.status === 403 && !retry) {
                 console.log("Access token expired trying to get a new one...");
-                const refreshUrl = "http://localhost:8080/api/users/refresh";
+                const refreshUrl = `${import.meta.env.VITE_API_BASE_URL}/api/users/refresh`;
                 const response = await fetch(refreshUrl, {
                     method: "GET",
                     headers: {"Authorization" : `Bearer ${localStorage.getItem("refreshToken")}`}

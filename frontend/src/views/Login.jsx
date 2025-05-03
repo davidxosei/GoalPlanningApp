@@ -17,7 +17,7 @@ export default function Login() {
             password: password
         }
 
-        const apiUrl = "http://localhost:8080/api/users/login";
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/users/login`;
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',

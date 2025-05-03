@@ -25,7 +25,7 @@ export default function Register() {
             password: password,
         }
 
-        const apiUrl = "http://localhost:8080/api/users/register"
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/users/register`
 
         try {
             const response = await fetch(apiUrl, {
