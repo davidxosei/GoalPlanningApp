@@ -68,6 +68,10 @@ export default function Create() {
                 console.log("Roadmap submitted successfully");
                 navigate("/");
             }
+
+            if (response.status === 403) {
+                console.log("We reached the 403 condition")
+            }
         } catch (error) {
             console.log(error);
             setErrorMessage("Error connecting to server, please try again later.");

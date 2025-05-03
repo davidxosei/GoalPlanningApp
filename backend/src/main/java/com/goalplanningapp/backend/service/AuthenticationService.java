@@ -1,10 +1,11 @@
-package com.goalplanningapp.backend.auth;
+package com.goalplanningapp.backend.service;
 
 import java.util.HashMap;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.goalplanningapp.backend.auth.JwtAuthenticationResponse;
 import com.goalplanningapp.backend.dto.AuthenticationRequest;
 import com.goalplanningapp.backend.dto.RegisterRequest;
 import com.goalplanningapp.backend.model.User;

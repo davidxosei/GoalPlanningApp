@@ -13,10 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
-import com.goalplanningapp.backend.auth.JwtService;
 import com.goalplanningapp.backend.model.User;
 import com.goalplanningapp.backend.repository.UserRepository;
+import com.goalplanningapp.backend.service.JwtService;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

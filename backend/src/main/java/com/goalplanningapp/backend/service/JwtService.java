@@ -1,4 +1,4 @@
-package com.goalplanningapp.backend.auth;
+package com.goalplanningapp.backend.service;
 
 import java.security.Key;
 import java.util.Date;
@@ -20,8 +20,8 @@ public class JwtService {
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
 
-    private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 15 * 4;
-    private static final long REFRESH_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
+    private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 5;
+    private static final long REFRESH_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24;
 
     public Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
