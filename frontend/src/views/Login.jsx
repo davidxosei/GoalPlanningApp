@@ -68,7 +68,6 @@ export default function Login() {
                 </form>
                 <div id = "loginlinks">
                     <Link to = "/register">Create account</Link>
-                    <Link to = "/">Continue as guest</Link>
                 </div>
             </div>
         </div>

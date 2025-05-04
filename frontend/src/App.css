@@ -30,7 +30,7 @@
 .bodyHeader {
   display: flex;
   justify-content: space-between;
-};
+}
 
 .createTop {
   display: flex;
