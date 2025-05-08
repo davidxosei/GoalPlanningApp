@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import Roadmap from "../components/Roadmap";
+import Nav from "../components/Nav";
 
 export default function DisplayRoadmap() {
     const location = useLocation();
@@ -21,6 +22,7 @@ export default function DisplayRoadmap() {
 
     return(
         <div>
+            <Nav />
             <div className="bodyHeader">
             <h1>{roadmap.title}</h1>
             <input className="manageSteps" type = 'button' value = {showStepDelete ? 'Cancel' : 'Manage steps'} onClick = {() => setShowStepDelete(prev => !prev)}/>
