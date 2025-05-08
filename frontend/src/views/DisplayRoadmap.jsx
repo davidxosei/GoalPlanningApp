@@ -21,15 +21,19 @@ export default function DisplayRoadmap() {
 
 
     return(
-        <div>
+        <>
             <Nav />
-            <div className="bodyHeader">
-            <h1>{roadmap.title}</h1>
-            <input className="manageSteps" type = 'button' value = {showStepDelete ? 'Cancel' : 'Manage steps'} onClick = {() => setShowStepDelete(prev => !prev)}/>
-            </div>
-            
+            <div className="body">
+                
+                <div className="bodyHeader">
+                <h1>{roadmap.title}</h1>
+                <input className="manageSteps" type = 'button' value = {showStepDelete ? 'Cancel' : 'Manage steps'} onClick = {() => setShowStepDelete(prev => !prev)}/>
+                </div>
+                
 
-            <Roadmap steps = {steps} setSteps={setSteps} showStepDelete = {showStepDelete}/>
-        </div>
+                <Roadmap steps = {steps} setSteps={setSteps} showStepDelete = {showStepDelete}/>
+            </div>
+        </>
+        
     );
 }
